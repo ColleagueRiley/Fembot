@@ -1,8 +1,9 @@
 # FEMBOT
-    Discord bot made with java and JDA 
+Discord bot made with java and JDA 
 
 # How to install/self host
-    1) make tokens file and add your token
+1) make tokens file and add your token
+
 ```sh
 git clone https://ColleagueRiley/Fembot.git
 cd Fembot
@@ -21,6 +22,6 @@ java Fembot
 ```
 
 # Bot Invite 
-    IF YOU'RE TRYING TO LOCALLY HOST, YOU HAVE TO CREATE YOUR OWN INVITE
+IF YOU'RE TRYING TO LOCALLY HOST, YOU HAVE TO CREATE YOUR OWN INVITE
 
-    https://canary.discord.com/api/oauth2/authorize?client_id=948767706432299078&permissions=8&scope=bot - invite link
+https://canary.discord.com/api/oauth2/authorize?client_id=948767706432299078&permissions=8&scope=bot - invite link
