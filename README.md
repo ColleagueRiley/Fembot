@@ -20,6 +20,6 @@ java Fembot
 ```
 
 # Bot Invite 
-    IF YOU'RE TRYING TO LOCALLY HOST, YOU HAVE TO CREATE YOUR OWN INVITE
+        IF YOU'RE TRYING TO LOCALLY HOST, YOU HAVE TO CREATE YOUR OWN INVITE
 
-    https://canary.discord.com/api/oauth2/authorize?client_id=948767706432299078&permissions=8&scope=bot - invite link
+        https://canary.discord.com/api/oauth2/authorize?client_id=948767706432299078&permissions=8&scope=bot - invite link
