@@ -28,51 +28,40 @@ import static net.dv8tion.jda.api.interactions.commands.OptionType.*;
 public class Fembot extends ListenerAdapter{
 
     public static void main(String[] args) throws LoginException{
-      String data = "noFile";
-      try {
-        File myObj = new File("../tokens");
-        Scanner myReader = new Scanner(myObj);
-        while (myReader.hasNextLine()) { data = myReader.nextLine();} myReader.close();
-      } catch (FileNotFoundException e) {}
-      if (data == "noFile"){ System.out.println("Failed to load tokens file"); System.exit(0);}
+        String data = "noFile";
+        try {
+            File myObj = new File("../tokens");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) { data = myReader.nextLine();} myReader.close();
+        } catch (FileNotFoundException e) {}
+        if (data == "noFile"){ System.out.println("Failed to load tokens file"); System.exit(0);}
 
-      JDA jda = JDABuilder.createLight(data, EnumSet.noneOf(GatewayIntent.class)) // slash commands don't need any intents
-                  .addEventListeners(new Fembot())
-                  .build();
+        JDA jda = JDABuilder.createLight(data, EnumSet.noneOf(GatewayIntent.class)).addEventListeners(new Fembot()).build();
 
-      // These commands take up to an hour to be activated after creation/update/delete
-      CommandListUpdateAction commands = jda.updateCommands();
+        // These commands take up to an hour to be activated after creation/update/delete
+        CommandListUpdateAction commands = jda.updateCommands();
 
-      // Simple reply commands
-      commands.addCommands(
-          Commands.slash("say", "Makes the bot say what you tell it to")
-          .addOption(STRING, "content", "What the bot should say", true) // you can add required options like this too
-      );
-      commands.addCommands(
-          Commands.slash("prune", "Prune messages from this channel")
-          .addOption(INTEGER, "amount", "How many messages to prune (Default 100)") // simple optional argument
-      );
+        // Simple reply commands
+        commands.addCommands(
+            Commands.slash("say", "Makes the bot say what you tell it to")
+            .addOption(STRING, "content", "What the bot should say", true) /* you can add required options like this too*/ );
+        commands.addCommands(
+            Commands.slash("prune", "Prune messages from this channel")
+            .addOption(INTEGER, "amount", "How many messages to prune (Default 100)") /*simple optional argument*/ );
 
-      commands.queue();       // Send the new set of commands to discord, this will override any existing global commands with the new set provided here
+        commands.queue();       // Send the new set of commands to discord, this will override any existing global commands with the new set provided here
     }
 
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event)
-    {
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event){
         // Only accept commands from guilds
-        if (event.getGuild() == null)
-            return;
-        switch (event.getName())
-        {
-        case "say":
-            say(event, event.getOption("content").getAsString()); // content is required so no null-check here
-            break;
-        case "prune": // 2 stage command with a button prompt
-            prune(event);
-            break;
-        default:
-            event.reply("I can't handle that command right now :(").setEphemeral(true).queue();
+        if (event.getGuild() == null) return;
+        
+        switch (event.getName()){
+            case "say": event.reply(content).queue(); break;
+            case "prune": prune(event); break;
+            default: event.reply("I can't handle that command right now :(").setEphemeral(true).queue();
         }
     }
 
@@ -83,13 +72,12 @@ public class Fembot extends ListenerAdapter{
         String authorId = id[0];
         String type = id[1];
         // Check that the button is for the user that clicked it, otherwise just ignore the event (let interaction fail)
-        if (!authorId.equals(event.getUser().getId()))
-            return;
+        if (!authorId.equals(event.getUser().getId())) return;
+
         event.deferEdit().queue(); // acknowledge the button was clicked, otherwise the interaction will fail
  
         MessageChannel channel = event.getChannel();
-        switch (type)
-        {
+        switch (type){
             case "prune":
                 int amount = Integer.parseInt(id[2]);
                 event.getChannel().getIterableHistory()
@@ -100,12 +88,6 @@ public class Fembot extends ListenerAdapter{
             case "delete":
                 event.getHook().deleteOriginal().queue();
         }
-    }
-
-
-    public void say(SlashCommandInteractionEvent event, String content)
-    {
-        event.reply(content).queue(); // This requires no permissions!
     }
 
 
