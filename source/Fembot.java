@@ -48,6 +48,9 @@ public class Fembot extends ListenerAdapter{
         commands.addCommands(
             Commands.slash("prune", "Prune messages from this channel")
             .addOption(INTEGER, "amount", "How many messages to prune (Default 100)") /*simple optional argument*/ );
+        commands.addCommands(
+            Commands.slash("howgay", "Sends percentage of your gayness")
+            .addOption(USER, "user", "The specific user to check (Default Yourself)"));
 
         commands.queue();       // Send the new set of commands to discord, this will override any existing global commands with the new set provided here
     }
@@ -58,9 +61,17 @@ public class Fembot extends ListenerAdapter{
         // Only accept commands from guilds
         if (event.getGuild() == null) return;
         
+        User usr=null;
+
         switch (event.getName()){
             case "say": event.reply(event.getOption("content").getAsString()).queue(); break;
             case "prune": prune(event); break;
+            case "howgay": 
+                if (event.getOption("user") == null) usr=event.getUser();
+                else usr=event.getOption("user").getAsUser(); 
+                int per = (int)(Math.random() * (100 - 0 + 1) + 0);
+                event.reply(usr.getAsMention() + " is " + per + "% gay").queue();
+                break;
             default: event.reply("I can't handle that command right now :(").setEphemeral(true).queue();
         }
     }
