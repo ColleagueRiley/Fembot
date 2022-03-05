@@ -59,7 +59,7 @@ public class Fembot extends ListenerAdapter{
         if (event.getGuild() == null) return;
         
         switch (event.getName()){
-            case "say": event.reply(content).queue(); break;
+            case "say": event.reply(event.getOption("content").getAsString()).queue(); break;
             case "prune": prune(event); break;
             default: event.reply("I can't handle that command right now :(").setEphemeral(true).queue();
         }
